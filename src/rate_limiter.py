@@ -1,15 +1,9 @@
 import time
 from threading import Lock
-from math import floor
 
-'''
-max_tokens = max tokens
-tokens = current tokens
-last_refill_time
-refill_rate = tokens / s
-'''
 
 class TokenBucket:
+
 
     def __init__(self, max_tokens, refill_rate):
         assert max_tokens > 0
@@ -23,6 +17,7 @@ class TokenBucket:
 
         self.lock = Lock()
 
+
     def _refill(self) -> None:
         curr_time = time.time()
         diff_time = curr_time - self.last_refill_time
@@ -32,5 +27,13 @@ class TokenBucket:
 
         self.last_refill_time = curr_time
 
-    def allow_request(self) -> bool: 
-        return True
+
+    def allow_request(self) -> bool:
+        with self.lock:
+            self._refill()
+
+            if self.tokens < 1.0:
+                return False
+            
+            self.tokens -= 1.0
+            return True

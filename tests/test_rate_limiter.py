@@ -1,5 +1,7 @@
 import time
+
 import pytest
+
 from src.rate_limiter import TokenBucket
 
 
