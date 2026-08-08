@@ -23,12 +23,14 @@ class TokenBucket:
 
         self.lock = Lock()
 
-    def _refill(self):
+    def _refill(self) -> None:
         curr_time = time.time()
         diff_time = curr_time - self.last_refill_time
 
-        missing_tokens = floor(diff_time * self.refill_rate)
-        self.tokens = max(self.tokens + missing_tokens, 10)
+        missing_tokens = diff_time * self.refill_rate
+        self.tokens = min(self.tokens + missing_tokens, self.max_tokens)
+
+        self.last_refill_time = curr_time
 
     def allow_request(self) -> bool: 
         return True
