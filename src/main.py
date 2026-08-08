@@ -8,7 +8,7 @@ rate_limiter = TokenBucket(max_tokens=3, refill_rate=1)
 
 
 @app.get("/")
-async def root():
+def root():
     if not rate_limiter.allow_request():
         raise HTTPException(
             status_code=status.HTTP_429_TOO_MANY_REQUESTS,
