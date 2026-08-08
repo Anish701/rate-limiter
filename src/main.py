@@ -1,7 +1,18 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+
+from src.rate_limiter import TokenBucket
 
 app = FastAPI()
 
-@app.get('/')
+rate_limiter = TokenBucket(max_tokens=3, refill_rate=1)
+
+
+@app.get("/")
 async def root():
+    if not rate_limiter.allow_request():
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many requests",
+        )
+
     return {"message": "Hello World"}
