@@ -15,15 +15,12 @@ class TokenBucketManager:
         self.lock = Lock()
 
     def _get_bucket(self, ip: str) -> TokenBucket:
-        res_token_bucket = self.buckets.get(ip)
-
-        if not res_token_bucket:
+        if ip not in self.buckets:
             self.buckets[ip] = TokenBucket(
                 max_tokens=self.max_tokens, refill_rate=self.refill_rate
             )
-            res_token_bucket = self.buckets.get(ip)
 
-        return res_token_bucket
+        return self.buckets.get(ip)
 
     def allow_request(self, ip: str) -> bool:
         with self.lock:
