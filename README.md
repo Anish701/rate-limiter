@@ -33,3 +33,33 @@ No AI tools were used in this project as it was meant to practice manual systems
     ```
 
 You can also test by using your browser to navigate to http://localhost:8000/ and refreshing repeatedly quickly.
+
+## Instructions (macOS)
+
+1. Install dependencies
+    ```bash
+    python -m venv .venv
+    source .venv/bin/activate
+    pip install -r requirements.txt
+    ```
+
+2. Run the test suite:
+    ```bash
+    pytest
+    ```
+
+3. Run the app:
+    ```bash
+    uvicorn src.main:app --reload
+    ```
+
+4. Test the rate limiter:
+    ```bash
+    # Run multiple single requests rapidly
+    curl http://127.0.0.1:8000/
+
+    # Run loop of rapid requests
+    for i in {1..5}; do curl -s http://127.0.0.1:8000/; done
+    ```
+
+You can also test by using your browser to navigate to http://localhost:8000/ and refreshing repeatedly quickly.
