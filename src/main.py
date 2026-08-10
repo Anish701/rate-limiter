@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Request, status
 
-from src.token_bucket_manager import TokenBucketManager
 from src.client import get_client_ip
+from src.token_bucket_manager import TokenBucketManager
 
 app = FastAPI()
 

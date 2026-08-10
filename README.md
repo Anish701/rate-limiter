@@ -63,3 +63,31 @@ You can also test by using your browser to navigate to http://localhost:8000/ an
     ```
 
 You can also test by using your browser to navigate to http://localhost:8000/ and refreshing repeatedly quickly.
+
+## Test multiple IP handling
+
+Windows OS:
+```bash
+# 1. Exhaust 3 tokens for IP 1.1.1.1 (Status: 200)
+1..3 | ForEach-Object { curl.exe -i -H "X-Forwarded-For: 1.1.1.1" http://127.0.0.1:8000/ }
+
+# 2. Try a 4th request for IP 1.1.1.1 (Status: 429)
+curl.exe -i -H "X-Forwarded-For: 1.1.1.1" http://127.0.0.1:8000/
+
+# 3. Prove IP 2.2.2.2 has its own fresh bucket (Status: 200)
+curl.exe -i -H "X-Forwarded-For: 2.2.2.2" http://127.0.0.1:8000/
+```
+
+macOS:
+```bash
+# 1. Exhaust 3 tokens for IP 1.1.1.1 (Prints 200 responses)
+for i in {1..3}; do
+  curl -i -H "X-Forwarded-For: 1.1.1.1" http://127.0.0.1:8000/
+done
+
+# 2. Try a 4th request for IP 1.1.1.1 (Prints 429 response)
+curl -i -H "X-Forwarded-For: 1.1.1.1" http://127.0.0.1:8000/
+
+# 3. Prove IP 2.2.2.2 still works with its own fresh bucket (Prints 200 response)
+curl -i -H "X-Forwarded-For: 2.2.2.2" http://127.0.0.1:8000/
+```

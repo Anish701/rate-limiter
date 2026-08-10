@@ -18,7 +18,7 @@ def test_rate_limit_multiplt_ip() -> None:
     ip_names = ["ip1", "ip2", "ip3"]
 
     for ip in ip_names:
-        headers =   {'X-Forwarded-For': ip}
+        headers = {"X-Forwarded-For": ip}
 
         for _ in range(3):
             response = client.get("/", headers=headers)
