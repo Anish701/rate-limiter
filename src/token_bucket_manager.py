@@ -1,6 +1,6 @@
 from threading import Lock
 
-from token_bucket import TokenBucket
+from src.token_bucket import TokenBucket
 
 
 class TokenBucketManager:
