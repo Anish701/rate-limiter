@@ -2,7 +2,7 @@ import time
 
 import pytest
 
-from src.rate_limiter import TokenBucket
+from src.token_bucket import TokenBucket
 
 
 # Test that token overflow results in max_tokens

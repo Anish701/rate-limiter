@@ -3,7 +3,7 @@ from threading import Lock
 
 
 class TokenBucket:
-    def __init__(self, max_tokens, refill_rate):
+    def __init__(self, max_tokens: float, refill_rate: float):
         assert max_tokens > 0
         assert refill_rate > 0
 

@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, status
 
-from src.rate_limiter import TokenBucket
+from src.token_bucket import TokenBucket
 
 app = FastAPI()
 
