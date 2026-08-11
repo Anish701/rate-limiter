@@ -1,8 +1,8 @@
 from threading import Lock
 
 from fastapi import HTTPException, Request, status
-from src.client import get_client_ip
 
+from src.client import get_client_ip
 from src.token_bucket import TokenBucket
 
 

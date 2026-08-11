@@ -1,8 +1,14 @@
+import pytest
 from fastapi.testclient import TestClient
 
-from src.main import app
+from src.main import app, rate_limiter
 
 client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limiter():
+    rate_limiter.buckets.clear()
 
 
 def test_rate_limit_single_ip() -> None:
@@ -14,7 +20,7 @@ def test_rate_limit_single_ip() -> None:
     assert response.status_code == 429
 
 
-def test_rate_limit_multiplt_ip() -> None:
+def test_rate_limit_multiple_ips() -> None:
     ip_names = ["ip1", "ip2", "ip3"]
 
     for ip in ip_names:
