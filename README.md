@@ -91,3 +91,16 @@ curl -i -H "X-Forwarded-For: 1.1.1.1" http://127.0.0.1:8000/
 # 3. Prove IP 2.2.2.2 still works with its own fresh bucket (Prints 200 response)
 curl -i -H "X-Forwarded-For: 2.2.2.2" http://127.0.0.1:8000/
 ```
+
+## Formatting
+
+python ruff formatting commands:
+```bash
+ruff format
+ruff check --fix
+```
+
+output code to prompt if needed for AI review (we do not use AI for this project other than reviewing code):
+```bash
+files-to-prompt . -e py > code_prompt.txt
+```
