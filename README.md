@@ -48,12 +48,18 @@ You can also test by using your browser to navigate to http://localhost:8000/ an
     pytest
     ```
 
-3. Run the app:
+3. If you are using the redis option, run redis on a separate terminal:
+    ```bash
+    brew install redis
+    redis-server
+    ```
+
+4. Run the app:
     ```bash
     uvicorn src.main:app --reload
     ```
 
-4. Test the rate limiter:
+5. Test the rate limiter:
     ```bash
     # Run multiple single requests rapidly
     curl http://127.0.0.1:8000/
