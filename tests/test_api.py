@@ -1,3 +1,4 @@
+import fakeredis
 import pytest
 from fastapi.testclient import TestClient
 
@@ -7,8 +8,17 @@ client = TestClient(app)
 
 
 @pytest.fixture(autouse=True)
-def reset_rate_limiter():
-    rate_limiter.buckets.clear()
+def mock_redis():
+    fake_redis = fakeredis.FakeStrictRedis(decode_responses=True)
+    rate_limiter.redis = fake_redis
+    rate_limiter._script = fake_redis.register_script(rate_limiter._script.script)
+    yield fakeredis
+
+
+# Use for in-memory rate limiter option
+# @pytest.fixture(autouse=True)
+# def reset_rate_limiter():
+#     rate_limiter.buckets.clear()
 
 
 def test_rate_limit_single_ip() -> None:

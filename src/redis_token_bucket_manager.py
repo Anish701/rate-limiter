@@ -6,7 +6,7 @@ from fastapi import HTTPException, Request, status
 
 from src.client import get_client_ip
 
-LUA_SCRIPT_FILE_PATH = Path("src/token_bucket.lua")
+LUA_SCRIPT_FILE_PATH = Path(__file__).parent / "token_bucket.lua"
 LUA_SCRIPT = LUA_SCRIPT_FILE_PATH.read_text()
 
 
@@ -32,12 +32,12 @@ class RedisTokenBucketManager:
         key = f"{self.key_prefix}:{ip}"
         curr_time = time.time()
 
-        result: bool = self._script(
+        result = self._script(
             keys=[key],
             args=[self.max_tokens, self.refill_rate, curr_time, requested_tokens],
         )
 
-        return result
+        return bool(result)
 
     def __call__(self, request: Request) -> None:
         client_ip = get_client_ip(request)

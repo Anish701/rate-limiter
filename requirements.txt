@@ -5,3 +5,5 @@ ruff
 httpx2
 files-to-prompt
 redis
+fakeredis
+lupa
