@@ -23,11 +23,11 @@ class TokenBucketManager:
 
     def allow_request(self, ip: str, requested_tokens: float = 1.0) -> bool:
         key = f'{self.key_prefix}:{ip}'
-        now = time.time()
+        curr_time = time.time()
 
         result: bool = self._script(
             keys=[key],
-            args=[self.max_tokens, self.refill_rate, now, requested_tokens]
+            args=[self.max_tokens, self.refill_rate, curr_time, requested_tokens]
         )
 
         return result
