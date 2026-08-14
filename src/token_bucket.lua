@@ -29,7 +29,7 @@ if tokens >= requested_tokens then
 end
 
 -- update bucket state
-redis.call('HMSET', key, 'tokens', tokens, 'last_refill', last_refill)
+redis.call('HSET', key, 'tokens', tokens, 'last_refill', last_refill)
 
 local ttl = math.ceil((max_tokens / refill_rate) * 3)
 redis.call('EXPIRE', key, ttl)

@@ -1,16 +1,23 @@
+import time
+from pathlib import Path
+
+import redis
 from fastapi import HTTPException, Request, status
 
 from src.client import get_client_ip
 
-import redis
-import time
-from pathlib import Path
-
-LUA_SCRIPT_FILE_PATH = Path('src/token_bucket.lua')
+LUA_SCRIPT_FILE_PATH = Path("src/token_bucket.lua")
 LUA_SCRIPT = LUA_SCRIPT_FILE_PATH.read_text()
 
-class TokenBucketManager:
-    def __init__(self, redis_client: redis.Redis, max_tokens: float, refill_rate: float, key_prefix: str = 'rate_limit'):
+
+class RedisTokenBucketManager:
+    def __init__(
+        self,
+        redis_client: redis.Redis,
+        max_tokens: float,
+        refill_rate: float,
+        key_prefix: str = "rate_limit",
+    ):
         assert max_tokens > 0
         assert refill_rate > 0
 
@@ -22,16 +29,15 @@ class TokenBucketManager:
         self._script = self.redis.register_script(LUA_SCRIPT)
 
     def allow_request(self, ip: str, requested_tokens: float = 1.0) -> bool:
-        key = f'{self.key_prefix}:{ip}'
+        key = f"{self.key_prefix}:{ip}"
         curr_time = time.time()
 
         result: bool = self._script(
             keys=[key],
-            args=[self.max_tokens, self.refill_rate, curr_time, requested_tokens]
+            args=[self.max_tokens, self.refill_rate, curr_time, requested_tokens],
         )
 
         return result
-        
 
     def __call__(self, request: Request) -> None:
         client_ip = get_client_ip(request)
