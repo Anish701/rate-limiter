@@ -1,6 +1,6 @@
 # Rate Limiter (Python)
 
-This is a learning project which implements a rate limiter using the token bucket algorithm.
+This is a learning project which implements a rate limiter using the token bucket algorithm and Redis.
 
 No AI tools were used in this project as it was meant to practice manual systems coding and design.
 
